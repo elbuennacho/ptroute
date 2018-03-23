@@ -17,6 +17,14 @@
             width: 100%;
         }
 
+        #right-panel select, #right-panel input {
+            font-size: 15px;
+        }
+        
+        #right-panel select {
+            width: 100%;
+        }
+        
         #right-panel i {
             font-size: 15px;
         }
@@ -30,6 +38,7 @@
             height: 100%;
             width: 50%;
         }
+
 
         #right-panel {
             float: right;
@@ -50,21 +59,23 @@
         <div id="time"></div>
     </div>
 
+
     <div id="map"></div>
 
+
+    
+    <div id="map"></div>
+    
     <script type="text/javascript">
         function initMap() {
             var bounds = new google.maps.LatLngBounds;
             var markersArray = [];
             var renderer = '';
-
             /*var destination_1 = {lat: 19.288151, lng: -99.666631};
             var destination_2 = {lat: 19.280886, lng: -99.668155};
             var destination_3 = {lat: 19.290783, lng: -99.622275};
             var destination_2 = {lat: 19.309302, lng: -99.586742};
             var destination_3 = {lat: 19.278808, lng: -99.658871};*/
-
-
             var destinationIcon = 'https://chart.googleapis.com/chart?' +
             'chst=d_map_pin_letter&chld=D|FF0000|000000';
             var originIcon = 'https://chart.googleapis.com/chart?' +
@@ -83,9 +94,14 @@
             var infoWindow = new google.maps.InfoWindow({map: map});
             if (navigator.geolocation) {
                 navigator.geolocation.watchPosition(function(position){
-                    
-                    
-                    
+                zoom: 14,
+                mapTypeId: google.maps.MapTypeId.ROADMAP,
+                scaleControl: false
+            });
+            var geocoder = new google.maps.Geocoder;
+            var infoWindow = new google.maps.InfoWindow({map: map});
+            if (navigator.geolocation) {
+                navigator.geolocation.watchPosition(function(position) {
                     var origin = {
                         lat: position.coords.latitude,
                         lng: position.coords.longitude
@@ -94,8 +110,7 @@
                     var destination_1 = {lat: 19.288151, lng: -99.666631};
                     var destination_2 = {lat: 19.280886, lng: -99.668155};
                     var destination_3 = {lat: 19.290783, lng: -99.622275};
-                    
-                    
+
             var destinationIcon = 'https://chart.googleapis.com/chart?' +
             'chst=d_map_pin_letter&chld=D|FF0000|000000';
             var originIcon = 'https://chart.googleapis.com/chart?' +
@@ -103,12 +118,19 @@
             /*infoWindow.setPosition(origin);
             infoWindow.setContent('<h2>Your position</h2>'+'<p>Latitude: ' + position.coords.latitude + ' -Longitude: ' + position.coords.longitude + '</p>' + 'city:' + city);
             map.setCenter(origin);*/
-            
+                    /*var destination_4 = {lat: 19.309302, lng: -99.586742};
+                    var destination_5 = {lat: 19.278808, lng: -99.658871};*/
+                    var destinationIcon = 'https://chart.googleapis.com/chart?' +
+            'chst=d_map_pin_letter&chld=D|FF0000|000000';
+            var originIcon = 'https://chart.googleapis.com/chart?' +
+            'chst=d_map_pin_letter&chld=O|FFFF00|000000';
+            infoWindow.setPosition(origin);
+            infoWindow.setContent('<h2>Your position</h2>'+'<p>Latitude: ' + position.coords.latitude + ' -Longitude: ' + position.coords.longitude + '</p>' + 'city:' + city);
+            map.setCenter(origin);
             var service = new google.maps.DistanceMatrixService;
             service.getDistanceMatrix({
                 origins: [{lat: position.coords.latitude, lng: position.coords.longitude}],
                 destinations: [destination_1, destination_2, destination_3],
-
             travelMode: google.maps.TravelMode.DRIVING,
             unitSystem: google.maps.UnitSystem.METRIC,
             avoidHighways: false,
@@ -122,7 +144,6 @@
                     var outputDiv = document.getElementById('output');
                     outputDiv.innerHTML = '';
                     deleteMarkers(markersArray);
-
                     var showGeocodedAddressOnMap = function(asDestination) {
                         var icon = asDestination ? destinationIcon : originIcon;
                         return function(results, status) {
@@ -140,6 +161,8 @@
                         
                     };
 
+                    };
+                    
                     for (var i = 0; i < originList.length; i++) {
                         var results = response.rows[i].elements;
                         geocoder.geocode({'address': originList[i]},
@@ -154,6 +177,14 @@
                     }
                 }
 
+                        outputDiv.innerHTML +='<p>From your position ' + originList[i] + ' a ' + destinationList[j] + ': ' + results[j].distance.text + ' in ' +
+                        results[j].duration.text + '.</p><br>';
+                        document.getElementById('km').innerHTML = '<p>The estimated distance from your position is about: ' + results[j].distance.text + '.</p>';
+                        document.getElementById('time').innerHTML = '<p>The estimated time in car is about: ' + results[j].duration.text + '.</p>';
+                    }
+                }
+                
+
             }
             });
                 }, function() {
@@ -162,6 +193,8 @@
             } else {
                 handleLocationError(false, infoWindow, map.getCenter());
             }
+
+            
 
             function handleLocationError(browserHasGeolocation, infoWindow, pos) {
                 infoWindow.setPosition(pos);
@@ -179,8 +212,16 @@
             }
             var km = results[j].distance.text;
             alert(' a ' + outputDiv);
+
             
     </script>
 </body>
 
 <script async defer src="https://maps.google.com/maps/api/js?sensor=false&libraries=geometry&new_forward_geocoder=truekey=AIzaSyD-qHMDSMh9zmb5UDCTrbm13REYz4Y6DiQ&new_forward_geocoder=true&callback=initMap"></script>
+
+    </script>
+</body>
+
+
+
+
