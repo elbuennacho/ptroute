@@ -53,6 +53,8 @@
     <div id="map"></div>
 
     <script type="text/javascript">
+        var interval = setInterval(initMap, 25000);
+    
         function initMap() {
             var bounds = new google.maps.LatLngBounds;
             var markersArray = [];
@@ -60,14 +62,14 @@
             /*var destination_1 = {lat: 19.288151, lng: -99.666631};
             var destination_2 = {lat: 19.280886, lng: -99.668155};
             var destination_3 = {lat: 19.290783, lng: -99.622275};
-            var destination_2 = {lat: 19.309302, lng: -99.586742};
-            var destination_3 = {lat: 19.278808, lng: -99.658871};*/
+            var destination_4 = {lat: 19.309302, lng: -99.586742};
+            var destination_5 = {lat: 19.278808, lng: -99.658871};*/
 
 
-            var destinationIcon = 'https://chart.googleapis.com/chart?' +
+            /*var destinationIcon = 'https://chart.googleapis.com/chart?' +
             'chst=d_map_pin_letter&chld=D|FF0000|000000';
             var originIcon = 'https://chart.googleapis.com/chart?' +
-            'chst=d_map_pin_letter&chld=O|FFFF00|000000';
+            'chst=d_map_pin_letter&chld=O|FFFF00|000000';*/    
             var map = new google.maps.Map(document.getElementById('map'), {
                 center: {lat: 19.282337 , lng: -99.654876},
                 zoom: 15,
@@ -77,12 +79,14 @@
 
             var trafficLayer = new google.maps.TrafficLayer();
             trafficLayer.setMap(map);
-
+            
+            
             var geocoder = new google.maps.Geocoder;
+            
             var infoWindow = new google.maps.InfoWindow({map: map});
             if (navigator.geolocation) {
-                navigator.geolocation.watchPosition(function(position) {
-
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    
                     var origin = {
                         lat: position.coords.latitude,
                         lng: position.coords.longitude
@@ -91,12 +95,24 @@
                     var destination_1 = {lat: 19.288151, lng: -99.666631};
                     var destination_2 = {lat: 19.280886, lng: -99.668155};
                     var destination_3 = {lat: 19.290783, lng: -99.622275};
+                    var destination_4 = {lat: 19.309302, lng: -99.586742};
+                    var destination_5 = {lat: 19.278808, lng: -99.658871};
+                    var destination_6 = {lat: 19.306551, lng: -99.607972};
+                    var destination_7 = {lat: 19.305974, lng: -99.611008};
+                    var destination_8 = {lat: 19.305483, lng: -99.613106};
+                    var destination_9 = {lat: 19.304941, lng: -99.615890};
+                    var destination_10 = {lat: 19.304141, lng: -99.619983};
+                    /*var destination_11 = {lat: 19.293441, lng: -99.653736};*/
 
 
             var destinationIcon = 'https://chart.googleapis.com/chart?' +
             'chst=d_map_pin_letter&chld=D|FF0000|000000';
             var originIcon = 'https://chart.googleapis.com/chart?' +
             'chst=d_map_pin_letter&chld=O|FFFF00|000000';
+            
+            var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            var labelIndex = 0;
+
             /*infoWindow.setPosition(origin);
             infoWindow.setContent('<h2>Your position</h2>'+'<p>Latitude: ' + position.coords.latitude + ' -Longitude: ' + position.coords.longitude + '</p>' + 'city:' + city);
             map.setCenter(origin);*/
@@ -104,7 +120,8 @@
             var service = new google.maps.DistanceMatrixService;
             service.getDistanceMatrix({
                 origins: [{lat: position.coords.latitude, lng: position.coords.longitude}],
-                destinations: [destination_1, destination_2, destination_3],
+                destinations: [destination_1, destination_2, destination_3, destination_4, destination_5,
+                destination_6, destination_7, destination_8, destination_9, destination_10],
 
             travelMode: google.maps.TravelMode.DRIVING,
             unitSystem: google.maps.UnitSystem.METRIC,
@@ -127,6 +144,7 @@
                                 map.fitBounds(bounds.extend(results[0].geometry.location));
                                 markersArray.push(new google.maps.Marker({
                                     map: map,
+                                    /*label: labels[labelIndex++ % labels.length],*/
                                     position: results[0].geometry.location,
                                     icon: icon
                                 }));
