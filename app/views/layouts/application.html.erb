@@ -53,8 +53,8 @@
     <div id="map"></div>
 
     <script type="text/javascript">
-        var interval = setInterval(initMap, 25000);
-    
+        /*var interval = setInterval(initMap, 25000);*/
+
         function initMap() {
             var bounds = new google.maps.LatLngBounds;
             var markersArray = [];
@@ -69,7 +69,7 @@
             /*var destinationIcon = 'https://chart.googleapis.com/chart?' +
             'chst=d_map_pin_letter&chld=D|FF0000|000000';
             var originIcon = 'https://chart.googleapis.com/chart?' +
-            'chst=d_map_pin_letter&chld=O|FFFF00|000000';*/    
+            'chst=d_map_pin_letter&chld=O|FFFF00|000000';*/
             var map = new google.maps.Map(document.getElementById('map'), {
                 center: {lat: 19.282337 , lng: -99.654876},
                 zoom: 15,
@@ -77,16 +77,34 @@
                 scaleControl: false
             });
 
+            
             var trafficLayer = new google.maps.TrafficLayer();
             trafficLayer.setMap(map);
             
-            
+            var decodedPath = google.maps.geometry.encoding.decodePath('_tutBvig_R@bCBzA~A@');
+            var decodedLevels = decodeLevels("BBBB");
+            var setRegion = new google.maps.Polyline({
+        path: decodedPath,
+        levels: decodedLevels,
+        strokeColor: "#FF0000",
+        strokeOpacity: 1.0,
+        strokeWeight: 2,
+        map: map
+    });
+        
+    function decodeLevels(encodedLevelsString) {
+    var decodedLevels = [];
+    return decodedLevels;
+}
+
+
+
             var geocoder = new google.maps.Geocoder;
-            
+
             var infoWindow = new google.maps.InfoWindow({map: map});
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function(position) {
-                    
+
                     var origin = {
                         lat: position.coords.latitude,
                         lng: position.coords.longitude
@@ -109,9 +127,9 @@
             'chst=d_map_pin_letter&chld=D|FF0000|000000';
             var originIcon = 'https://chart.googleapis.com/chart?' +
             'chst=d_map_pin_letter&chld=O|FFFF00|000000';
-            
-            var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-            var labelIndex = 0;
+
+            /*var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            var labelIndex = 0;*/
 
             /*infoWindow.setPosition(origin);
             infoWindow.setContent('<h2>Your position</h2>'+'<p>Latitude: ' + position.coords.latitude + ' -Longitude: ' + position.coords.longitude + '</p>' + 'city:' + city);
@@ -196,12 +214,4 @@
 
     </script>
 </body>
-<script async defer src="https://maps.googleapis.com/maps/api/js?new_forward_geocoder=true&key=AIzaSyD-qHMDSMh9zmb5UDCTrbm13REYz4Y6DiQ&callback=initMap&sensor=true&new_forward_geocoder=true"></script>
-
-
-
-
-
-
-
-
+<script async defer src="https://maps.googleapis.com/maps/api/js?new_forward_geocoder=true&key=AIzaSyD-qHMDSMh9zmb5UDCTrbm13REYz4Y6DiQ&callback=initMap&libraries=geometry&sensor=true&new_forward_geocoder=true"></script>
